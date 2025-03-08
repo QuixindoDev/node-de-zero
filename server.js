@@ -1,19 +1,33 @@
-// import { createServer } from "node:http";
-
-// const server = createServer((request, response) => {
-//   response.write("Rodou... Mas travou... NOoooo");
-
-//   return response.end();
-// });
-
-// server.listen(3333);
-
 import {fastify} from 'fastify';
+import { DatabaseMemory } from './database_memory.js';
+
 
 const server = fastify();
 
-server.get('/', () => {
-  return 'Hellp World'
+const database = new DatabaseMemory();
+
+server.post('/videos', (response, reply) => {
+  database.create({
+    title: 'video 01',
+    description: 'Este é o video 01',
+    duration: 180
+  });
+
+  console.log(database.list());
+
+  return reply.status(201).send();
+});
+
+server.get('/video', () => {
+  return 'Hello Rocketseat'
+});
+
+server.put('/videos/:id', () => {
+  return 'Hello Node.js'
+});
+
+server.delete('/videos/:id', () => {
+  return 'Hello Node.js'
 });
 
 server.listen({
